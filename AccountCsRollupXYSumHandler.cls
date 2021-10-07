@@ -15,6 +15,7 @@ public with sharing class AccountCsRollupXYSumHandler {
         //Duplicate Code ends
 
         for(Contact c:newContacts){
+            Account relatedAcc=accMap.get(c.AccountId);
             if(c.Type__c == 'Positive'){
                 relatedAcc.Rollup_Amount_X__c+=c.Amount_X__c;                    
             }
@@ -45,9 +46,11 @@ public with sharing class AccountCsRollupXYSumHandler {
         Map<Id,Account> accMap=new Map<Id,Account>([SELECT Id,Rollup_Amount__c,Rollup_Amount_X__c,Rollup_Amount_Y__c FROM Account where Id in :reqAccIds]);        
         //Duplicate code ends
 
-        for(Contact c:Trigger.new){
+        for(Contact c:newContacts){
+
+            Account relatedAcc=accMap.get(c.AccountId);
         
-            Contact oldContact=Trigger.oldMap.get(c.Id);
+            Contact oldContact=oldContactMap.get(c.Id);
             Boolean hasTypeChanged=oldContact.Type__c == c.Type__c;
 
             if(hasTypeChanged && oldContact.Type__c == 'Negative'){
