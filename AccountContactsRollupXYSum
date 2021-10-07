@@ -1,0 +1,23 @@
+trigger AccountContactsRollupXYSum on Contact (after insert,after update,after delete) {
+
+
+    if(Trigger.isInsert){
+         //addAmount
+        AccountCsRollupXYSumHandler.AddAmount(Trigger.new);
+                        
+        }
+
+    if(Trigger.isUpdate){
+        //updateContacts
+         AccountCsRollupXYSumHandler.UpdateAmount(Trigger.oldMap, Trigger.new);                
+        }            
+            
+        
+    
+    else if(Trigger.isDelete){       
+        //delete records
+        AccountCsRollupXYSumHandler.subtractAmount(Trigger.oldMap, Trigger.old);
+        
+    }
+    
+}
